@@ -54,6 +54,12 @@ def get_leaderboard_data(meeting_key='latest'):
 
     return leaderboard
 
+def get_interval_data(session_key='latest'):
+    url = f"https://api.openf1.org/v1/intervals?session_key={session_key}&interval<0.005"
+    response = urlopen(url)
+    return json.loads(response.read().decode('utf-8'))
+
+
 
 count = 0
 while True:
