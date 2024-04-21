@@ -2,7 +2,8 @@ from urllib.request import urlopen
 import json
 import ssl
 import time
-
+import fastf1
+from fastf1.core import Laps 
 ssl._create_default_https_context = ssl._create_unverified_context
 
 driver_numbers = [1,2,3,4,10,11,14,16,18,20,22,23,24,27,31,44,55,63,77,81]
@@ -29,7 +30,10 @@ driver_names = {
     81: "Oscar Piastri"
 }
 
-
+def get_driver_abbreviation(driver_number):
+    driver_name = driver_names.get(driver_number, "Unknown Driver")
+    last_name = driver_name.split()[-1]  # Get the last name
+    return last_name[:3].upper()  # First 3 letters in uppercase
 
 def get_leaderboard_data(meeting_key='latest'):
     """Fetches and processes leaderboard data for the given meeting key."""
@@ -40,25 +44,17 @@ def get_leaderboard_data(meeting_key='latest'):
         try:
             response = urlopen(url)
             data = json.loads(response.read().decode('utf-8'))
-
-            # Sort data in reverse chronological order (most recent first)
             data.sort(key=lambda item: item['date'], reverse=True) 
+            latest_position = data[0]['position']
 
-            if data: 
-                leaderboard.append({
-                    'driver_number': driver_number,
-                    'position': data[0]['position']  # Take the first (latest) position 
-                })
+            leaderboard.append({
+                'driver_number': driver_number,
+                'position': latest_position, 
+            })
         except Exception as e:
             print(f"Error fetching data for driver {driver_number}: {e}")
 
     return leaderboard
-
-def get_interval_data(session_key='latest'):
-    url = f"https://api.openf1.org/v1/intervals?session_key={session_key}&interval<0.005"
-    response = urlopen(url)
-    return json.loads(response.read().decode('utf-8'))
-
 
 
 count = 0
@@ -80,4 +76,4 @@ while True:
 
     print("------------------")
     print(count)
-    time.sleep(10) 
+    time.sleep(1) 
