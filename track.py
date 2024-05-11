@@ -95,5 +95,74 @@ turn_17_telemetry = get_corner_telemetry(turn_17_entry, turn_17_exit)
 turn_18_telemetry = get_corner_telemetry(turn_18_entry, turn_18_exit)
 
 ver_min_speed_turn_1 = turn_1_telemetry['Speed'].min()
+ver_min_speed_turn_2 = turn_2_telemetry['Speed'].min()
+ver_min_speed_turn_3 = turn_3_telemetry['Speed'].min()
+ver_min_speed_turn_4 = turn_4_telemetry['Speed'].min()
+ver_min_speed_turn_5 = turn_5_telemetry['Speed'].min()
+ver_min_speed_turn_6 = turn_6_telemetry['Speed'].min()
+ver_min_speed_turn_7 = turn_7_telemetry['Speed'].min()
+ver_min_speed_turn_8 = turn_8_telemetry['Speed'].min()
+ver_min_speed_turn_9 = turn_9_telemetry['Speed'].min()
+ver_min_speed_turn_10 = turn_10_telemetry['Speed'].min()
+ver_min_speed_turn_11 = turn_11_telemetry['Speed'].min()
+ver_min_speed_turn_12 = turn_12_telemetry['Speed'].min()
+ver_min_speed_turn_13 = turn_13_telemetry['Speed'].min()
+ver_min_speed_turn_14 = turn_14_telemetry['Speed'].min()
+ver_min_speed_turn_15 = turn_15_telemetry['Speed'].min()
+ver_min_speed_turn_16 = turn_16_telemetry['Speed'].min()
+ver_min_speed_turn_17 = turn_17_telemetry['Speed'].min()
+ver_min_speed_turn_18 = turn_18_telemetry['Speed'].min()
 
-print(ver_min_speed_turn_1)
+ver_avg_speed_turn_1 = turn_1_telemetry['Speed'].mean()
+ver_avg_speed_turn_2 = turn_2_telemetry['Speed'].mean()
+ver_avg_speed_turn_3 = turn_3_telemetry['Speed'].mean()
+ver_avg_speed_turn_4 = turn_4_telemetry['Speed'].mean()
+ver_avg_speed_turn_5 = turn_5_telemetry['Speed'].mean()
+ver_avg_speed_turn_6 = turn_6_telemetry['Speed'].mean()
+ver_avg_speed_turn_7 = turn_7_telemetry['Speed'].mean()
+ver_avg_speed_turn_8 = turn_8_telemetry['Speed'].mean()
+ver_avg_speed_turn_9 = turn_9_telemetry['Speed'].mean()
+ver_avg_speed_turn_10 = turn_10_telemetry['Speed'].mean()
+ver_avg_speed_turn_11 = turn_11_telemetry['Speed'].mean()
+ver_avg_speed_turn_12 = turn_12_telemetry['Speed'].mean()
+ver_avg_speed_turn_13 = turn_13_telemetry['Speed'].mean()
+ver_avg_speed_turn_14 = turn_14_telemetry['Speed'].mean()
+ver_avg_speed_turn_15 = turn_15_telemetry['Speed'].mean()
+ver_avg_speed_turn_16 = turn_16_telemetry['Speed'].mean()
+ver_avg_speed_turn_17 = turn_17_telemetry['Speed'].mean()
+ver_avg_speed_turn_18 = turn_18_telemetry['Speed'].mean()
+
+track_profile = {
+    'slow_corners': ['turn_2', 'turn_11', 'turn_16'],
+    'medium_corners': ['turn_3', 'turn_5', 'turn_7', 'turn_8', 'turn_10'],
+    'fast_corners': ['turn_1', 'turn_4', 'turn_6', 'turn_9', 'turn_12', 'turn_13', 'turn_14', 'turn_15', 'turn_17', 'turn_18'],
+}
+# Create dictionaries to store average speeds for each corner type
+ver_slow_corner_avg_speeds = {}
+ver_medium_corner_avg_speeds = {}
+ver_fast_corner_avg_speeds = {}
+
+# Populate dictionaries
+for corner_name in track_profile['slow_corners']:
+    ver_slow_corner_avg_speeds[corner_name] = globals()["ver_avg_speed_" + corner_name]
+
+for corner_name in track_profile['medium_corners']:
+    ver_medium_corner_avg_speeds[corner_name] = globals()["ver_avg_speed_" + corner_name]
+
+for corner_name in track_profile['fast_corners']:
+    ver_fast_corner_avg_speeds[corner_name] = globals()["ver_avg_speed_" + corner_name]
+
+# Calculate average speeds for each type
+ver_avg_slow_corner_speed = sum(ver_slow_corner_avg_speeds.values()) / len(ver_slow_corner_avg_speeds)
+ver_avg_medium_corner_speed = sum(ver_medium_corner_avg_speeds.values()) / len(ver_medium_corner_avg_speeds)
+ver_avg_fast_corner_speed = sum(ver_fast_corner_avg_speeds.values()) / len(ver_fast_corner_avg_speeds)
+
+# Filter out NaN values before calculating the sum
+valid_fast_corner_speeds = [speed for speed in ver_fast_corner_avg_speeds.values() if not np.isnan(speed)]
+ver_avg_fast_corner_speed = sum(valid_fast_corner_speeds) / len(valid_fast_corner_speeds)
+
+print(f"Verstappen's Average Speeds:")
+print(f"  Slow Corners: {ver_avg_slow_corner_speed:.2f} km/h")
+print(f"  Medium Corners: {ver_avg_medium_corner_speed:.2f} km/h")
+print(f"  Fast Corners: {ver_avg_fast_corner_speed:.2f} km/h")
+
